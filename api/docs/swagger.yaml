@@ -1,0 +1,86 @@
+definitions:
+  http.Response:
+    properties:
+      data: {}
+      description:
+        type: string
+      status:
+        type: string
+    type: object
+  models.Message:
+    properties:
+      message:
+        type: string
+      type:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a api gateway
+paths:
+  /ws/{chat_id}/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: you can chat with your friends
+      parameters:
+      - description: chat_id
+        in: path
+        name: chat_id
+        required: true
+        type: string
+      - description: sender_name
+        in: query
+        name: sender_name
+        required: true
+        type: string
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: bad request
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: internal server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Chat handler
+      tags:
+      - chat
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
